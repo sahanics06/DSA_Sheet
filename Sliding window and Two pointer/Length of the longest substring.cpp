@@ -65,7 +65,7 @@ class Solution{
     }
 };
 
-// Solution 2-   Using sliding window and two pointer. Time complexity O(N^2)
+// Solution 2-   Using sliding window and two pointer. Time complexity O(N)
 
 class Solution{
     public:
@@ -94,6 +94,35 @@ class Solution{
             i++;
         }
         ans=max(ans, i-j);
+        return ans;
+    }
+};
+
+// Solution--- s consists of English letters, digits, symbols and spaces.
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n=s.length(), c=0, ans=1;
+        if(n==0)
+            return 0;
+        string st="";
+        for(int i=0; i<n; i++)
+        {
+            int arr[256]={0};
+            for(int j=i; j<n; j++)
+            {
+                  if(arr[s[j]-0]==0)
+                    {
+                        arr[s[j]-0]=1;
+                        ans=max(ans,j-i+1);
+                    }
+                    else
+                    {
+                        break;
+                    }
+            }
+        }
         return ans;
     }
 };
