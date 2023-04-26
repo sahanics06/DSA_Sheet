@@ -176,9 +176,9 @@ void MinHeap::deleteKey(int i)
     // Your code here
     if(i>heap_size-1)
         return;
-    harr[i]=INT_MIN;
-    decreaseKey(i, INT_MIN);
-    extractMin();
+    harr[i]=INT_MIN;                // here we can also write harr[i]=harr[heap_size-1];
+    decreaseKey(i, INT_MIN);        //                        --heap_size;
+    extractMin();                   //                        MinHeapify(0);   this will also give us the result
     return;
 }
 
