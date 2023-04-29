@@ -63,7 +63,7 @@ class Solution {
         {
             ans.push_back(v);
             return;
-        }
+        }                                               // Here we get duplicate values in the answer. So we have used set in the main function.
         solve(i, tmp, n, sum, v, a, ans);
         solve(i+1, tmp, n, sum, v, a, ans);
         v.pop_back();
