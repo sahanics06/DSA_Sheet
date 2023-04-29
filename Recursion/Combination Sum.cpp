@@ -64,8 +64,8 @@ class Solution {
             ans.push_back(v);
             return;
         }                                               // Here we get duplicate values in the answer. So we have used set in the main function.
-        solve(i, tmp, n, sum, v, a, ans);
-        solve(i+1, tmp, n, sum, v, a, ans);
+        solve(i, tmp, n, sum, v, a, ans);               // Here we made one call extra which is causing same situation and so duplicate result.
+        solve(i+1, tmp, n, sum, v, a, ans);             // For this we have done proper method below this solution.
         v.pop_back();
         solve(i+1, t, n, sum, v, a, ans);
         return;
@@ -87,5 +87,38 @@ class Solution {
             result.push_back(x);
         }
         return result;
+    }
+};
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+  public:
+    void solve(int i, int tmp, int n, int sum, vector<int>v, vector<int>a, vector<vector<int>>&ans)
+    {
+        if(i==n)
+            return;
+        if(tmp==sum)
+        {
+            ans.push_back(v);
+            return;
+        }
+        if(tmp>sum) return;   
+        if(a[i]<=sum)
+        {
+            v.push_back(a[i]);
+            solve(i, tmp+a[i], n, sum, v, a, ans);
+            v.pop_back();
+        }
+        solve(i+1, tmp, n, sum, v, a, ans);
+        return;
+    }
+    vector<vector<int> > combinationSum(vector<int> &A, int B) {
+        sort(A.begin(), A.end());
+        A.erase(unique(A.begin(), A.end()), A.end());
+        vector<vector<int>>ans;
+        vector<int>v;
+        solve(0, 0, A.size(), B, v, A, ans);
+        return ans;
     }
 };
