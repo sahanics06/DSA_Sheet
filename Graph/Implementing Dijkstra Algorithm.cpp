@@ -72,3 +72,43 @@ class Solution
         return result;
     }
 };
+
+// Solution- Using Set. When we encounter a value in set for which we have better answer then we erase it and this erasing ability was not there in priority queue.
+
+class Solution
+{
+	public:
+	//Function to find the shortest distance of all the vertices
+    //from the source vertex S.
+    vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
+    {
+        // Code here
+        set<pair<int, int>>st;
+        vector<int>result(V, INT_MAX);
+        result[S]=0;
+        st.insert({S, 0});
+        while(!st.empty())
+        {
+            auto &it=*st.begin();
+            int s=it.first;
+            int d=it.second;
+            st.erase(it);
+            for(auto x:adj[s])
+            {
+                int adjNode=x[0];
+                int dist=x[1];
+                if(result[adjNode]>d+dist)
+                {
+                    if(result[adjNode]!=INT_MAX)
+                    {
+                        st.erase({adjNode, result[adjNode]});
+                    }
+                    result[adjNode]=d+dist;
+                    st.insert({adjNode, d+dist});
+                }
+            }
+        }
+        return result;
+    }
+};
+
