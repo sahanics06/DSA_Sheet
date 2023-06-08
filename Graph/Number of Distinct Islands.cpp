@@ -43,7 +43,9 @@ Constraints:
 grid[i][j] == 0 or grid[i][j] == 1
 */
 
-//Solution
+//Solution using DFS
+// For storing unique vectors of pair. We are subtrating every coordinates with the base value i.e with the coordinate from where 
+                                         // DFS call starts for every component.
 
 class Solution {
   public:
@@ -78,6 +80,54 @@ class Solution {
                 {
                     vector<pair<int,int>>chain;
                     dfs(grid, vis, chain, i, j, dx, dy, j, i);
+                    st.insert(chain);
+                }
+            }
+        }
+        return st.size();
+    }
+};
+
+// Solution using BFS
+// For storing unique vectors of pair. We are subtrating every coordinates with the base value i.e with the coordinate from where 
+                                         // BFS starts for every component.
+
+class Solution {
+  public:
+    int countDistinctIslands(vector<vector<int>>& grid) {
+        // code here
+        int n=grid.size(), m=grid[0].size();
+        set<vector<pair<int,int>>>st;
+        vector<vector<int>>vis(n, vector<int>(m, -1));
+        int dx[4]={0, 1, 0, -1};
+        int dy[4]={1, 0, -1, 0};
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<m; j++)
+            {
+                if(vis[i][j]==-1&&grid[i][j]==1)
+                {
+                    queue<pair<int,int>>q;
+                    q.push({i, j});
+                    vis[i][j]=1;
+                    vector<pair<int,int>>chain;
+                    while(!q.empty())
+                    {
+                        int txx=q.front().second;
+                        int tyy=q.front().first;
+                        q.pop();
+                        for(int k=0; k<4; k++)
+                        {
+                            int tx=dx[k]+txx;
+                            int ty=dy[k]+tyy;
+                            if(tx>=0&&ty>=0&&ty<n&&tx<m&&grid[ty][tx]==1&&vis[ty][tx]==-1)
+                            {
+                                vis[ty][tx]=1;
+                                q.push({ty, tx});
+                                chain.push_back({ty-i, tx-j});
+                            }
+                        }
+                    }
                     st.insert(chain);
                 }
             }
