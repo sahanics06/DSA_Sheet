@@ -89,3 +89,57 @@ class Solution {
         return ans;
     }
 };
+
+
+// Solution using Topological Sort. Since in topological sort we start with node with indegree 0 and all present nodes comes from previous nodes in sequence.
+// So the order is optimised and we just need to find the lesser cost to reach a node and update it. Efficient than other algo as the sequence is already known using Topo.
+
+class Solution {
+  public:
+    void topo(vector<vector<pair<int,int>>>&adj, vector<int>&vis, int source, stack<int>&st)
+    {
+        vis[source]=1;
+        for(auto x: adj[source])
+        {
+            int dest=x.first;
+            if(!vis[dest])
+            {
+                topo(adj, vis, dest, st);
+            }
+        }
+        st.push(source);
+    }
+     vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
+        // code here
+        vector<vector<pair<int,int>>>adj(N);
+        for(int i=0; i<M; i++)
+        {
+            int source=edges[i][0];
+            int destination=edges[i][1];
+            int weight=edges[i][2];
+            adj[source].push_back({destination, weight});
+        }
+        stack<int>st;
+        vector<int>vis(N,0), ans(N, INT_MAX);
+        topo(adj, vis, 0, st);
+        ans[0]=0;
+        while(!st.empty())
+        {
+            int node=st.top();
+            st.pop();
+            for(auto x:adj[node])
+            {
+                if(ans[node]+x.second<ans[x.first])
+                {
+                    ans[x.first]=ans[node]+x.second;
+                }
+            }
+        }
+        for(int i=0; i<N; i++)
+        {
+            if(ans[i]==INT_MAX)
+                ans[i]=-1;
+        }
+        return ans;
+    }
+};
