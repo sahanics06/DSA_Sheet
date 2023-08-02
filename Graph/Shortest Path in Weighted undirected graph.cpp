@@ -69,7 +69,7 @@ class Solution {
             ans.push_back(i);
             i=parent[i];
         }
-        if(i!=1)
+        if(i!=1)// also if(dist[n]==INT_MAX; that means final node is not reached)
             return {-1};
         ans.push_back(1);
         reverse(ans.begin(), ans.end());
