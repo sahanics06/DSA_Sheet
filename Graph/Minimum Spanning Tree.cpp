@@ -44,7 +44,8 @@ The graph is connected and doesn't contain self-loops & multiple edges.
 
 */
 
-// Minimum Spanning tree. Add in queue if not visited. Add weight to sum when taken  from queue.
+// USING PRIM'S ALGORITHM -Start with node 0 and weight as 0. Take PQ as (weight, node). 
+// Add sum when node is taken from queue. Add in queue if not visited.  Minimum Spanning tree. Add in queue if not visited. Add weight to sum when taken  from queue.
 
 class Solution
 {
@@ -77,5 +78,88 @@ class Solution
             }
         }
         return sum;
+    }
+};
+
+// KRUSHKAL'S ALGO - Create adj list such that {weight,{u,v}}. Then Sort it. Then if parent of u and v are not same then add weight to MST and do Union(u,v). 
+// If node is a part of component then no need to add weight.
+
+class Solution
+{
+	public:
+	class Disjoint_set{
+	    vector<int>parent, rank;
+	    public:
+	    Disjoint_set(int n)
+	    {
+	        parent.resize(n+1);
+	        rank.resize(n+1,0);
+	        for(int i=0; i<n+1; i++)
+	        {
+	            parent[i]=i;
+	        }
+	    }
+	    
+	    int findParent(int x)
+	    {
+	        if(parent[x]==x)
+	        {
+	            return x;
+	        }
+	        return parent[x]=findParent(parent[x]);
+	    }
+	    
+	    void Union(int x, int y)
+	    {
+	        x=findParent(parent[x]);
+	        y=findParent(parent[y]);
+	        if(x==y)
+	        {
+	            return;
+	        }
+	        if(rank[x]>rank[y])
+	        {
+	            parent[y]=x;
+	        }
+	        else if(rank[x]<rank[y])
+	        {
+	            parent[x]=y;
+	        }
+	        else
+	        {
+	            parent[x]=y;
+	            rank[y]++;
+	        }
+	    }
+	};
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        vector<pair<int, pair<int,int>>>edges;
+        for(int i=0; i<V; i++)
+        {
+            for(auto x:adj[i])
+            {
+                int node=x[0];
+                int wt=x[1];
+                edges.push_back({wt,{i,node}});
+            }
+        }
+        int ans=0;
+        Disjoint_set ds(V);
+        sort(edges.begin(), edges.end());
+        
+        for(x:edges)
+        {
+            int wt=x.first;
+            int u=x.second.first;
+            int v=x.second.second;
+            if(ds.findParent(u)!=ds.findParent(v))
+            {
+                ans+=wt;
+                ds.Union(u,v);
+            }
+        }
+        return ans;
     }
 };
