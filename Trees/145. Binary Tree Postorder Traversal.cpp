@@ -20,8 +20,48 @@ The number of the nodes in the tree is in the range [0, 100].
 -100 <= Node.val <= 100
 */
 
-// Solution using iterative method
+// Solution using iterative method using one stack
 
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        if(root==NULL)
+            return {};
+        stack<TreeNode*>st;
+        vector<int>ans;
+        TreeNode * cur=root;
+        while(!st.empty() || cur) // here we need cur condition because initially stack is empty and cur is assigned with
+        {                     // root. If we remove cur and push root in stack before while loop like previous techniques 
+                              // then there will be two times root occurrence in stack which will give repeated answer.    
+            if(cur)
+            {
+                st.push(cur);
+                cur=cur->left;
+            }
+            else
+            {
+                TreeNode *tmp = st.top()->right;
+                if(tmp==NULL)
+                {
+                    tmp = st.top();
+                    st.pop();
+                    ans.push_back(tmp->val);
+                    while(!st.empty() && tmp==st.top()->right)
+                    {
+                        tmp = st.top();
+                        ans.push_back(tmp->val);
+                        st.pop();
+                    }
+                }
+                else
+                {
+                    cur=tmp;
+                }
+            }
+        }
+        return ans;
+    }
+};
 
 
 // Solution using recursion
