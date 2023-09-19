@@ -27,7 +27,7 @@ The tree is guaranteed to be complete.
 */
 
 //***************************************************************************************************************
-// Solution by finding the height of left subtree and right subtree. If lh==rh then we return (1<<lh)-1. i.e, 2^lh-1 as number of nodes
+//Solution by finding the height of left subtree and right subtree. If lh==rh then we return (1<<lh)-1. i.e, 2^lh-1 as number of nodes
 
 /**
  * Definition for a binary tree node.
