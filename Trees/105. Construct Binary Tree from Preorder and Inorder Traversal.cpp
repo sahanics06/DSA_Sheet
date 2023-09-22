@@ -50,6 +50,8 @@ public:
         int left_node = inRoot-inStart;
         // from preorder we find the root and its index from inorder which gives us the left subtree starting point and 
         // ending point also we get the right subtree's starting and ending point
+        // here for left subtree, the sub array for preorder is preStart+1 to preStart+number_of_node(i.e in_root-inStart, 
+        // since in_root gives the position of root so we can subtract it from start index to get the left subtree nodes) and for inorder we go from inStart to in_root-1.
         root->left = build_tree(preorder, preStart+1, preStart+left_node, inorder, inStart, inRoot-1, mp);
         root->right = build_tree(preorder, preStart+left_node+1, preEnd, inorder, inRoot+1, inEnd, mp);
         return root;
