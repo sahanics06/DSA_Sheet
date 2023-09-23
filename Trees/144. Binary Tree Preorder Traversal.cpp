@@ -68,3 +68,46 @@ public:
         return ans;
     }
 };
+
+
+// Solution using Moris preorder traversal
+
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int>ans;
+        TreeNode* cur = root;
+        while(cur)
+        {
+            if(cur->left==NULL)
+            {
+                ans.push_back(cur->val);
+                cur=cur->right;
+            }
+            else
+            {
+                TreeNode* prev = cur->left;
+                while(prev->right && prev->right!=cur)
+                {
+                    prev = prev->right;
+                }
+                if(prev->right==NULL)
+                {
+                    prev->right = cur; // the right most node of left subtree is NULL so point it to cur
+                    ans.push_back(cur->val); // here we will connect to subtree parent and move left so 
+                                             // insert the cur value
+                    cur = cur->left;
+                }
+                else
+                {
+                    // This is the 3rd case, here prev->right is connected to cur
+                    // cur is taken to prev->right i.e the node parent to left subtree. So
+                    // since cur reached to subtree parent so now go towards right i.e. cur=cur->right
+                    prev->right = NULL;
+                    cur = cur->right;
+                }
+            }
+        }
+        return ans;
+    }
+};
