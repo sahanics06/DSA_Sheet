@@ -156,3 +156,55 @@ public:
         return ans;
     }
 };
+
+// BFS Total 1's minus 1's reachable to edge
+
+class Solution {
+  public:
+    int numberOfEnclaves(vector<vector<int>> &grid) {
+        int n=grid.size(), m=grid[0].size();
+        vector<vector<int>>vis(n, vector<int>(m,0));
+        int dx[4]={0,1,0,-1};
+        int dy[4]={1,0,-1,0};
+        queue<pair<int,int>>q;
+        int total=0;
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<m; j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    if(i==0 || j==0 || i==n-1 || j==m-1)
+                    {
+                        q.push({i,j});
+                        vis[i][j]=1;
+                    }
+                    total++;
+                }
+            }
+        }
+        int count=0;
+        while(!q.empty())
+        {
+            int tx=q.front().second;
+            int ty=q.front().first;
+            vis[ty][tx]=1;
+            count++;
+            //cout<<ty<<" "<<tx<<"  "<<count<<endl;
+            q.pop();
+            for(int k=0; k<4; k++)
+            {
+                int x=tx+dx[k];
+                int y=ty+dy[k];
+                if(x>=0 && y>=0 && x<m && y<n && grid[y][x]==1 && vis[y][x]==0)
+                {
+                    q.push({y,x});
+                    vis[y][x]=1; // here vis[y][x] is needed because there might be a point which is already inserted in 
+                                 // queue and not yet encountered adn the same point is also added in the queue by some other 
+                                 // traversal point. So their wiil be same point many time.
+                }
+            }
+        }
+        return total-count;
+    }
+};
